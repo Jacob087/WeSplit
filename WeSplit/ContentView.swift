@@ -15,12 +15,15 @@ struct ContentView: View {
     
     let tipPercentages = [0, 10, 15, 20, 25]
     
-    var totalPerPerson: Double {
-        let peopleCount = Double(numberOfPeopleIndex + 2)
+    
+    var grandTotal: Double {
         let tipSelection = Double(tipPercentage)
         
         let tipValue = checkAmount / 100 * tipSelection
-        let grandTotal = checkAmount + tipValue
+        return checkAmount + tipValue
+    }
+    var totalPerPerson: Double {
+        let peopleCount = Double(numberOfPeopleIndex + 2)
         let amountPerPerson = grandTotal / peopleCount
         
         return amountPerPerson
@@ -41,25 +44,26 @@ struct ContentView: View {
                 .pickerStyle(.navigationLink)
                 
                 Section {
-                    Text("How much tip do you want to leave?")
-                    
                     Picker("Tip percentage", selection: $tipPercentage) {
                         ForEach(0..<101) {
                             Text("\($0) %")
                         }
                     }
                     .pickerStyle(.navigationLink)
+                } header: {
+                    Text("How much tip do you want to leave?")
                 }
+                
                 Section {
-                    Text("Amount per person:")
                     Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "GBP"))
-                let tipSelection = Double(tipPercentage)
-                let tipValue = checkAmount / 100 * tipSelection
-                let grandTotal = checkAmount + tipValue
+                } header: {
+                    Text("Amount per person:")
+                }
+                
                 Section{
-                    Text("Total amount for check:")
                     Text(grandTotal, format: .currency(code: Locale.current.currency?.identifier ?? "GBP"))
-                    }
+                } header: {
+                    Text("Total amount for check:")
                 }
             }
             .navigationTitle("WeSplit")
@@ -72,13 +76,15 @@ struct ContentView: View {
             }
         }
     }
-    
-    
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
-        }
+}
+
+
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
 }
+
 
